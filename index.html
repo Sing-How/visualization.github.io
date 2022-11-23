@@ -1,177 +1,246 @@
-<!--
-	此示例下载自 https://echarts.apache.org/examples/zh/editor.html?c=line-race
--->
-<!DOCTYPE html>
-<html lang="zh-CN" style="height: 100%">
+<!doctype html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>可视化图表展示</title>
+
+    <link href="css/main.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
 </head>
-<body style="height: 100%; margin: 0">
-<div id="container" style="height: 100%"></div>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3 sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="javascript:void(0)" id = "data1" onclick="data1()">
+                            <span data-feather="home" class="align-text-bottom"></span>
+                            人均耗电量
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" id = "data2" onclick="data2()">
+                            <span data-feather="file" class="align-text-bottom"></span>
+                            65岁以上人口占比
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" id = "data3" onclick="data3()">
+                            <span data-feather="shopping-cart" class="align-text-bottom"></span>
+                            城镇人口占比
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
-<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/jquery"></script>
-<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
-<!-- Uncomment this line if you want to dataTool extension
-<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/extension/dataTool.min.js"></script>
--->
-<!-- Uncomment this line if you want to use gl extension
-<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
--->
-<!-- Uncomment this line if you want to echarts-stat extension
-<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
--->
-<!-- Uncomment this line if you want to use map
-<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js"></script>
-<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
--->
-<!-- Uncomment these two lines if you want to use bmap extension
-<script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=YOUR_API_KEY"></script>
-<script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/extension/bmap.min.js"></script>
--->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2" id = "topic">人均耗电量</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group me-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                    </div>
+                </div>
+            </div>
 
-<script type="text/javascript">
-    var dom = document.getElementById('container');
-    var myChart = echarts.init(dom, null, {
-        renderer: 'canvas',
-        useDirtyRect: false
-    });
-    var app = {};
-    var option;
+            <div id="container" style="height: 800px"></div>
 
-    $.get(
-        './城镇人口占比.json',
-        function (_rawData) {
-            run(_rawData);
-        }
-    );
+            <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/jquery"></script>
+            <script type="text/javascript"
+                    src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>
 
-    function run(_rawData) {
-        // var countries = ['Australia', 'Canada', 'China', 'Cuba', 'Finland', 'France', 'Germany', 'Iceland', 'India', 'Japan', 'North Korea', 'South Korea', 'New Zealand', 'Norway', 'Poland', 'Russia', 'Turkey', 'United Kingdom', 'United States'];
-        const countries = [
-            '巴西',
-            '中国',
-            '德国',
-            '埃塞俄比亚',
-            '法国',
-            '英国',
-            '印度尼西亚',
-            '印度',
-            '日本',
-            '大韩民国',
-            '俄罗斯联邦',
-            '瑞典',
-            '美国',
-            '越南',
-            '世界',
-            '南非'
-        ];
-        const datasetWithFilters = [];
-        const seriesList = [];
-        echarts.util.each(countries,
-            function (country) {
-                var datasetId = 'dataset_' + country;
-                datasetWithFilters.push({
-                    id: datasetId,
-                    fromDatasetId: 'dataset_raw',
-                    transform: {
-                        type: 'filter',
-                        config: {
-                            and: [
-                                {dimension: 'Year', gte: 1950},
-                                {dimension: 'Country', '=': country}
-                            ]
-                        }
-                    }
+            <script type="text/javascript">
+                var dom = document.getElementById('container');
+                var myChart = echarts.init(dom, null, {
+                    renderer: 'canvas',
+                    useDirtyRect: false
                 });
-                seriesList.push({
-                    type: 'line',
-                    datasetId: datasetId,
-                    showSymbol: false,
-                    name: country,
-                    endLabel: {
-                        show: true,
-                        formatter: function (params) {
-                            return params.value[1] + ': ' + params.value[0];
-                        }
-                    },
-                    labelLayout: {
-                        moveOverlap: 'shiftY'
-                    },
-                    emphasis: {
-                        focus: 'series'
-                    },
-                    encode: {
-                        x: 'Year',
-                        y: 'Data',
-                        label: ['Country', 'Data'],
-                        itemName: 'Year',
-                        tooltip: ['Data']
+                var app = {};
+                var option;
+                var datapath = './人均耗电量.json'
+                $.get(
+                    datapath,
+                    function (_rawData) {
+                        run(_rawData);
                     }
-                });
-            });
-        option = {
-            animationDuration: 10,
-            dataset: [
-                {
-                    id: 'dataset_raw',
-                    source: _rawData
-                },
-                ...datasetWithFilters
-            ],
-            title: {
-                text: '***'
-            },
-            tooltip: {
-                order: 'valueDesc',
-                trigger: 'axis'
-            },
-            xAxis: {
-                type: 'category',
-                nameLocation: 'middle'
-            },
-            yAxis: {
-                name: 'Data'
-            },
-            grid: {
-                right: 140
-            },
-            dataZoom: [
-                {
-                    type: 'slider',
-                    start: 0,
-                    end: 100,
-                    xAxisIndex: 0,
-                },
-                {
-                    type: 'inside',
-                    start: 0,
-                    end: 100,
-                    xAxisIndex: 0
-                },
-                {
-                    type: 'slider',
-                    start: 0,
-                    end: 100,
-                    yAxisIndex: 0,
-                    left:'100px'
-                },
-                {
-                    type: 'inside',
-                    start: 0,
-                    end: 100,
-                    yAxisIndex: 0
+                );
+
+                function run(_rawData) {
+                    // var countries = ['Australia', 'Canada', 'China', 'Cuba', 'Finland', 'France', 'Germany', 'Iceland', 'India', 'Japan', 'North Korea', 'South Korea', 'New Zealand', 'Norway', 'Poland', 'Russia', 'Turkey', 'United Kingdom', 'United States'];
+                    const countries = [
+                        '巴西',
+                        '中国',
+                        '德国',
+                        '埃塞俄比亚',
+                        '法国',
+                        '英国',
+                        '印度尼西亚',
+                        '印度',
+                        '日本',
+                        '大韩民国',
+                        '俄罗斯联邦',
+                        '瑞典',
+                        '美国',
+                        '越南',
+                        '世界',
+                        '南非'
+                    ];
+                    let datasetWithFilters = [];
+                    let seriesList = [];
+                    echarts.util.each(countries,
+                        function (country) {
+                            var datasetId = 'dataset_' + country;
+                            datasetWithFilters.push({
+                                id: datasetId,
+                                fromDatasetId: 'dataset_raw',
+                                transform: {
+                                    type: 'filter',
+                                    config: {
+                                        and: [
+                                            {dimension: 'Year', gte: 1950},
+                                            {dimension: 'Country', '=': country}
+                                        ]
+                                    }
+                                }
+                            });
+                            seriesList.push({
+                                type: 'line',
+                                datasetId: datasetId,
+                                showSymbol: false,
+                                name: country,
+                                endLabel: {
+                                    show: true,
+                                    formatter: function (params) {
+                                        return params.value[1] + ': ' + params.value[0];
+                                    }
+                                },
+                                labelLayout: {
+                                    moveOverlap: 'shiftY'
+                                },
+                                emphasis: {
+                                    focus: 'series'
+                                },
+                                encode: {
+                                    x: 'Year',
+                                    y: 'Data',
+                                    label: ['Country', 'Data'],
+                                    itemName: 'Year',
+                                    tooltip: ['Data']
+                                }
+                            });
+                        });
+                    option = {
+                        animationDuration: 10,
+                        dataset: [
+                            {
+                                id: 'dataset_raw',
+                                source: _rawData
+                            },
+                            ...datasetWithFilters
+                        ],
+                        tooltip: {
+                            order: 'valueDesc',
+                            trigger: 'axis'
+                        },
+                        xAxis: {
+                            type: 'category',
+                            nameLocation: 'middle'
+                        },
+                        yAxis: {
+                            name: 'Data'
+                        },
+                        grid: {
+                            right: 140
+                        },
+                        dataZoom: [
+                            {
+                                type: 'slider',
+                                start: 0,
+                                end: 100,
+                                xAxisIndex: 0
+                            },
+                            {
+                                type: 'inside',
+                                start: 0,
+                                end: 100,
+                                xAxisIndex: 0
+                            },
+                            {
+                                type: 'slider',
+                                start: 0,
+                                end: 100,
+                                yAxisIndex: 0,
+                                left: '2%'
+                            },
+                            {
+                                type: 'inside',
+                                start: 0,
+                                end: 100,
+                                yAxisIndex: 0
+                            }
+                        ],
+                        series: seriesList
+                    };
+                    myChart.setOption(option);
                 }
-            ],
-            series: seriesList
-        };
-        myChart.setOption(option);
-    }
 
-    if (option && typeof option === 'object') {
-        myChart.setOption(option);
-    }
+                if (option && typeof option === 'object') {
+                    myChart.setOption(option);
+                }
 
-    window.addEventListener('resize', myChart.resize);
-</script>
+                window.addEventListener('resize', myChart.resize);
+            </script>
+            <script>
+                function data1() {
+                    datapath = './人均耗电量.json'
+                    $.get(
+                        datapath,
+                        function (_rawdata) {
+                            run(_rawdata);
+                        }
+                    );
+                    document.getElementsByClassName("nav-link active")[0].className = "nav-link"
+                    document.getElementById("data1").className = "nav-link active"
+                    document.getElementById("topic").innerText = "人均耗电量"
+                }
+
+                function data2() {
+                    datapath = './65岁以上人口占比.json'
+                    $.get(
+                        datapath,
+                        function (_rawdata) {
+                            run(_rawdata);
+                        }
+                    );
+                    document.getElementsByClassName("nav-link active")[0].className = "nav-link"
+                    document.getElementById("data2").className = "nav-link active"
+                    document.getElementById("topic").innerText = "65岁以上人口占比"
+                }
+
+                function data3() {
+                    datapath = './城镇人口占比.json'
+                    $.get(
+                        datapath,
+                        function (_rawdata) {
+                            run(_rawdata);
+                        }
+                    );
+                    document.getElementsByClassName("nav-link active")[0].className = "nav-link"
+                    document.getElementById("data3").className = "nav-link active"
+                    document.getElementById("topic").innerText = "城镇人口占比"
+                }
+            </script>
+
+        </main>
+    </div>
+</div>
+<script src="js/dashboard.js"></script>
 </body>
 </html>
