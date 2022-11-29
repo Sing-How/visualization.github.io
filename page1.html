@@ -35,6 +35,24 @@
                             城镇人口占比
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" id = "data4" onclick="data4()">
+                            <span data-feather="shopping-cart" class="align-text-bottom"></span>
+                            人口增长率
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" id = "data5" onclick="data5()">
+                            <span data-feather="shopping-cart" class="align-text-bottom"></span>
+                            人均GDP
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="javascript:void(0)" id = "data6" onclick="data6()">
+                            <span data-feather="shopping-cart" class="align-text-bottom"></span>
+                            出生时预期寿命
+                        </a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -210,7 +228,6 @@
                     document.getElementById("data1").className = "nav-link active"
                     document.getElementById("topic").innerText = "人均耗电量"
                 }
-
                 function data2() {
                     datapath = './data/65岁以上人口占比.json'
                     $.get(
@@ -223,7 +240,6 @@
                     document.getElementById("data2").className = "nav-link active"
                     document.getElementById("topic").innerText = "65岁以上人口占比"
                 }
-
                 function data3() {
                     datapath = './data/城镇人口占比.json'
                     $.get(
@@ -235,6 +251,42 @@
                     document.getElementsByClassName("nav-link active")[0].className = "nav-link"
                     document.getElementById("data3").className = "nav-link active"
                     document.getElementById("topic").innerText = "城镇人口占比"
+                }
+                function data4() {
+                    datapath = './data/人口增长率.json'
+                    $.get(
+                        datapath,
+                        function (_rawdata) {
+                            run(_rawdata);
+                        }
+                    );
+                    document.getElementsByClassName("nav-link active")[0].className = "nav-link"
+                    document.getElementById("data4").className = "nav-link active"
+                    document.getElementById("topic").innerText = "人口增长率"
+                }
+                function data5() {
+                    datapath = './data/人均GDP.json'
+                    $.get(
+                        datapath,
+                        function (_rawdata) {
+                            run(_rawdata);
+                        }
+                    );
+                    document.getElementsByClassName("nav-link active")[0].className = "nav-link"
+                    document.getElementById("data5").className = "nav-link active"
+                    document.getElementById("topic").innerText = "人均GDP"
+                }
+                function data6() {
+                    datapath = './data/出生时预期寿命.json'
+                    $.get(
+                        datapath,
+                        function (_rawdata) {
+                            run(_rawdata);
+                        }
+                    );
+                    document.getElementsByClassName("nav-link active")[0].className = "nav-link"
+                    document.getElementById("data6").className = "nav-link active"
+                    document.getElementById("topic").innerText = "出生时预期寿命"
                 }
             </script>
 
