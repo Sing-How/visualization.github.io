@@ -6,7 +6,31 @@
 >
 > 宋璎航、皮亚杰、邓松林、施养权
 
+#### 模板的使用说明
+
+> * [echarts-动态排序折线图](https://echarts.apache.org/examples/zh/editor.html?c=line-race)
+>
+>   <img src=".\img\line-race.png" alt="line-race" style="zoom: 33%;" />
+>
+> * [echarts-大数据量面积图](https://echarts.apache.org/examples/zh/editor.html?c=area-simple)
+>
+>   <img src=".\img\area-simple.png" alt="area-simple" style="zoom:33%;" />
+>
+> * [echarts-各国人均寿命与GDP关系演变](https://echarts.apache.org/examples/zh/editor.html?c=scatter-life-expectancy-timeline)
+>
+>   <img src=".\img\scatter-life-expectancy-timeline.png" alt="scatter-life-expectancy-timeline" style="zoom:33%;" />
+
+在此基础上，我们做了以下工作：
+
+1. 从世界银行的公开数据库中选取了6个我们感兴趣的数据集。
+
+2. 结合前两个模板，实现了可变区间的折线图，方便用户观察多个相近的数据。
+
+3. 以第三个模板为基础，实现了可变数据集的动态散点图。用户可以选择多个数据集中的任意两组，研究它们随时间变化的关系。
+
 从上世纪60年代到现在，全球各个地区国家的人们平均生活质量都是由显著的提升的。我们组从统计的数据划分6个角度方面来分析各个数据可视化，和相互结合分析出各个的关系演变来实现对应可视化。
+
+### 正文
 
 本项目，使用交互式仪表盘对各国人均耗电量与城镇人口占比关系演变数据进行可视化，用户可以进行交互式探索获取更多信息。本项目可以用于清晰的看出近几十年的变化程度和单独某年的数据详情及其对应占比比例等信息。
 
@@ -36,7 +60,7 @@
 
 ![Interface](./img/Interface.png)
 
-###### 可变区间折线图
+##### 可变区间折线图
 
 可视化面板可以分为两个部分
 
@@ -54,7 +78,7 @@
 
 
 
-###### 动态散点图
+##### 动态散点图
 
 这部分的可视化是选取的近30年，也就是1990-2020年的样本数据
 
@@ -64,7 +88,7 @@
 用户可以通过该功能自由地对任意两数据集之间的关系进行探索。
 ![2-1](./img/2-1.png)
 
-### 总结
+#### 总结
 
 从交互式面板中，我们可以了解到数据内容集里的以下信息：
 
